@@ -152,7 +152,7 @@ public class CardTransactionTest {
         createUser[0].setFirst_name(createUser[0].getFirst_name() + randomNo);
         createUser[0].setActive(false);
 
-        response = Users.createUser(createUser, sandboxCredentials.getUsername(), sandboxCredentials.getPassword(), URIs.USERS_PATH);
+        response = Users.createUser(createUser[0], sandboxCredentials.getUsername(), sandboxCredentials.getPassword(), URIs.USERS_PATH);
         LoggerUtil.logInfo(response.body().prettyPrint());
 
         usersResponse = ResponseUtil.deserializeTo(response.getBody().asString(), UsersResponse.class);
@@ -216,9 +216,8 @@ public class CardTransactionTest {
     public void createCardWithInvalidDataTest() {
         SoftAssert softAssert = new SoftAssert();
 
-        Cards cards = new Cards();
-        cards.setUser_token("");
-        cards.setCard_product_token("");
+        createCard.setUser_token("");
+        createCard.setCard_product_token("");
         response = CardsRequest.createCard(createCard, URIs.CARD_PATH);
         LoggerUtil.logInfo(response.body().prettyPrint());
 
