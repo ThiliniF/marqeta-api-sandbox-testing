@@ -9,10 +9,8 @@ public class Transactions {
 
     }
 
-    private static Response response;
-
     public static Response createTransaction(Object requestBody, String url) {
-        response = RequestUtil.sendPOSTRequest(requestBody, url);
+        Response response = RequestUtil.sendPOSTRequest(requestBody, url);
         return response;
     }
 }

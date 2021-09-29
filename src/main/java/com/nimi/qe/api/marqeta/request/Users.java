@@ -10,10 +10,8 @@ public class Users {
 
     }
 
-    private static Response response;
-
     public static Response createUser(Object requestBody, String authUsername, String authPassword, String url) {
-        response = RequestUtil.sendPOSTRequestwithBasicAuth(authUsername, authPassword, requestBody, url);
+        Response response = RequestUtil.sendPOSTRequestwithBasicAuth(authUsername, authPassword, requestBody, url);
         return response;
     }
 }

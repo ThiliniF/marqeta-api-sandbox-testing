@@ -8,6 +8,10 @@ import java.io.IOException;
 
 public class ResponseUtil {
 
+    private ResponseUtil(){
+
+    }
+
     public static <T> T deserializeTo(String response, Class<T> toType) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(response, toType);

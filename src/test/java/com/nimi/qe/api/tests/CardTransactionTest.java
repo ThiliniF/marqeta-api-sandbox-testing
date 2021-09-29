@@ -1,4 +1,4 @@
-package com.nimi.qe.qpi.tests;
+package com.nimi.qe.api.tests;
 
 import com.nimi.qe.api.common.ResponseCodes;
 import com.nimi.qe.api.common.ResponseMessages;
@@ -47,6 +47,7 @@ public class CardTransactionTest {
     private static final String STATE_PENDING = "PENDING";
     private static final String STATE_DECLINED = "DECLINED";
     private static final String ERROR_MSG = "error_message";
+    private static final double AMOUNT = 101;
     private String userToken = null;
     private String productToken = null;
     private String cardToken = null;
@@ -254,6 +255,28 @@ public class CardTransactionTest {
 
         softAssert.assertEquals(response.getStatusCode(), ResponseCodes.CODE_500, "Invalid Response Code!");
         softAssert.assertTrue(UserResponse.containsUserErrorMessage(ResponseUtil.responseAsString(response, ERROR_MSG), ResponseMessages.INTERNAL_SERVER_ERROR), "Invalid server message!");
+
+        softAssert.assertAll();
+
+    }
+
+    @Test(description = "FPTA-TC-9", priority = 9, dependsOnMethods = {"createUserTest", "cardProductsTest", "createCardTest"})
+    public void createTransactionExceedBoundaryTest() throws IOException {
+        SoftAssert softAssert = new SoftAssert();
+
+        transactions.setCard_token(cardToken);
+        transactions.setAmount(AMOUNT);
+
+        response = Transactions.createTransaction(transactions, URIs.TRANSACTION_PATH);
+        LoggerUtil.logInfo(response.body().prettyPrint());
+
+        transactionResponse = ResponseUtil.deserializeTo(response.getBody().asString(), TransactionResponse.class);
+
+        softAssert.assertEquals(response.getStatusCode(), ResponseCodes.CODE_201, "Invalid Response Code!");
+        softAssert.assertEquals(transactionResponse.transaction.card_token, cardToken, "Incorrect Card Token!");
+        softAssert.assertEquals(transactionResponse.transaction.card_acceptor.mid, transactions.getMid(), "Incorrect MID!");
+        softAssert.assertEquals(transactionResponse.transaction.request_amount, transactions.getAmount(), "Incorrect Amount!");
+        softAssert.assertEquals(transactionResponse.transaction.state, STATE_DECLINED, "Incorrect State!");
 
         softAssert.assertAll();
 

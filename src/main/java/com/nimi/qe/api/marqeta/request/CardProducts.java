@@ -5,10 +5,12 @@ import io.restassured.response.Response;
 
 public class CardProducts {
 
-    private static Response response;
+    private CardProducts(){
+
+    }
 
     public static Response cardProducts(String body, String url) {
-        response = RequestUtil.sendGETRequest(body, url);
+        Response response = RequestUtil.sendGETRequest(body, url);
         return response;
     }
 }

@@ -9,10 +9,8 @@ public class CardsRequest {
 
     }
 
-    private static Response response;
-
     public static Response createCard(Object requestBody, String url) {
-        response = RequestUtil.sendPOSTRequest(requestBody, url);
+        Response response = RequestUtil.sendPOSTRequest(requestBody, url);
         return response;
     }
 }
